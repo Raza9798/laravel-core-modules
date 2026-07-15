@@ -81,14 +81,14 @@ class ClassGenerator
         File::put($filePath, $content);
     }
 
-    protected function controller(string $module, string $name)
+    public function controller(string $module, string $name, ?bool $isResource = true, ?bool $isApi = true)
     {
         $filename = "{$name}Controller";
 
         Artisan::call('make:controller', [
             'name' => $filename,
-            '--resource' => true,
-            '--api' => true,
+            '--resource' => $isResource,
+            '--api' => $isApi,
         ]);
 
         $source = app_path("Http/Controllers/{$filename}.php");
@@ -299,13 +299,16 @@ class ClassGenerator
         $this->fileConfig($source,$destination,$module,'app\\Policies');
     }
 
-    protected function generateRoutes(string $module, string $name)
+    public function generateRoutes(string $module, string $name)
     {
-        $filename = Str::snake(Str::pluralStudly($name));
-        $routeFile = base_path("Modules/{$module}/routes/web.php");
+        $webRouteFile = base_path("Modules/{$module}/routes/web.php");
+        if (!File::exists($webRouteFile)) {
+            File::put($webRouteFile, "<?php\n\nuse Illuminate\Support\Facades\Route;\n\nRoute::middleware(['web'])->group(function () {\n    // Define your routes here\n});\n");
+        }
 
-        if (!File::exists($routeFile)) {
-            File::put($routeFile, "<?php\n\nuse Illuminate\Support\Facades\Route;\n\nRoute::middleware(['web'])->group(function () {\n    // Define your routes here\n});\n");
+        $apiRouteFile = base_path("Modules/{$module}/routes/api.php");
+        if (!File::exists($apiRouteFile)) {
+            File::put($apiRouteFile, "<?php\n\nuse Illuminate\Support\Facades\Route;\n\nRoute::middleware(['auth:sanctum'])->group(function () {\n    // Define your API routes here\n});\n");
         }
     }
 }

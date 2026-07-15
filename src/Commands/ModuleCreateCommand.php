@@ -4,6 +4,7 @@ namespace Raza9798\LaravelCoreModules\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Raza9798\LaravelCoreModules\Services\ClassGenerator;
 
 class ModuleCreateCommand extends Command
 {
@@ -37,6 +38,8 @@ class ModuleCreateCommand extends Command
         foreach($folders as $folder){
             File::makeDirectory("$path/$folder",0755,true);
         }
+
+        (new ClassGenerator())->generateRoutes($name, $path);
 
         $this->info("Module $name created");
     }

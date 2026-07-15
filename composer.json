@@ -1,7 +1,7 @@
 {
     "name": "raza9798/laravel-core-modules",
     "description": "Laravel package for modular development, providing a structured approach to organizing models, controllers, migrations, and policies under a clean namespace like Core/. It simplifies scaffolding and enhances code separation for improved project structure.",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "license": "MIT",
     "autoload": {
         "psr-4": {

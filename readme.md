@@ -223,6 +223,11 @@ Modules/Inventory/
 
 ---
 
+# Artisan Commands Summary
+```
+php artisan module -h
+```
+
 
 # 🤝 Contributing
 

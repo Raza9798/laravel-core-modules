@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Raza9798\LaravelCoreModules\Commands\CoreModulesInstallCommand;
 use Raza9798\LaravelCoreModules\Commands\ModuleCreateCommand;
 use Raza9798\LaravelCoreModules\Commands\ModuleMakeCommand;
+use Raza9798\LaravelCoreModules\Commands\ThirdPartyInstallationCommand;
 use Illuminate\Support\Facades\File;
 
 class CoreModulesServiceProvider extends ServiceProvider
@@ -27,7 +28,8 @@ class CoreModulesServiceProvider extends ServiceProvider
             $this->commands([
                 CoreModulesInstallCommand::class,
                 ModuleCreateCommand::class,
-                ModuleMakeCommand::class
+                ModuleMakeCommand::class,
+                ThirdPartyInstallationCommand::class,
             ]);
 
             $this->publishes([
@@ -45,6 +47,7 @@ class CoreModulesServiceProvider extends ServiceProvider
                         $this->loadMigrationsFrom($migrationPath);
                     }
                     $this->loadRoutesFrom($module . '\\routes\\web.php');
+                    $this->loadRoutesFrom($module . '\\routes\\api.php');
                 }
             }
         }
