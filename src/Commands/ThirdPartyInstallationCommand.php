@@ -48,6 +48,35 @@ class ThirdPartyInstallationCommand extends Command
         File::copy(__DIR__ . '/../stubs/Authentication/LogoutController.php', base_path('Modules/Authentication/app/Http/Controllers/LogoutController.php'));
         File::copy(__DIR__ . '/../stubs/Authentication/add_authentication_columns_to_users_table.php', base_path("Modules/Authentication/database/migrations/" . date('Y_m_d_His') . "_add_authentication_columns_to_users_table.php"));
         File::copy(__DIR__ . '/../stubs/Authentication/api.php', base_path('Modules/Authentication/routes/api.php'));
+
+        $userModel = app_path('Models/User.php');
+        $contents = File::get($userModel);
+        $content = str_replace(
+            "#[Fillable(['name', 'email', 'password'])]",
+            "#[Fillable(['name', 'email', 'password', 'two_factor_secret', 'two_factor_verified_at', 'has_otp_login', 'has_login', 'is_active'])]", $contents
+        );
+        File::put($userModel, $content);
+
+        $contents = File::get($userModel);
+        $content = str_replace(
+            "#[Hidden(['password', 'remember_token'])]",
+            "#[Hidden(['password', 'remember_token', 'two_factor_secret', 'two_factor_verified_at', 'has_otp_login', 'has_login'])]", $contents
+        );
+        File::put($userModel, $content);
+        
+        $contents = File::get($userModel);
+        $content = str_replace(
+            "use Illuminate\Foundation\Auth\User as Authenticatable;",
+            "use Illuminate\Foundation\Auth\User as Authenticatable;\nuse Laravel\Sanctum\HasApiTokens;", $contents
+        );
+        File::put($userModel, $content);
+
+        $contents = File::get($userModel);
+        $content = str_replace(
+            "use HasFactory, Notifiable;",
+            "use HasFactory, Notifiable, HasApiTokens;", $contents
+        );
+        File::put($userModel, $content);
         $this->info('API Authentication Package installed successfully.');
     }
 }

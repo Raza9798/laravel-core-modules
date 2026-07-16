@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->string('two_factor_secret')->nullable();
-            $table->string('two_factor_verified_at')->nullable();
-            $table->boolean('has_otp_login')->nullable()->default(false);
-            $table->boolean('has_login')->nullable()->default(false);
-            $table->boolean('is_active')->nullable()->default(false);
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('two_factor_secret')->after('remember_token')->nullable();
+            $table->string('two_factor_verified_at')->nullable()->after('two_factor_secret');
+            $table->boolean('has_otp_login')->nullable()->default(false)->after('two_factor_verified_at');
+            $table->boolean('has_login')->nullable()->default(false)->after('has_otp_login');
+            $table->boolean('is_active')->nullable()->default(false)->after('has_login');
         });
     }
 
