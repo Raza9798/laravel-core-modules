@@ -36,19 +36,18 @@ class CoreModulesServiceProvider extends ServiceProvider
                 __DIR__ . '/../config/laravel-core-modules.php'
                     => config_path('laravel-core-modules.php'),
             ], 'laravel-core-modules-config');
+        }
 
-            $modulesPath = config('laravel-core-modules.modules_path', base_path('Modules'));
+        $modulesPath = config('laravel-core-modules.modules_path', base_path('Modules'));
 
-            if (File::exists($modulesPath)) {
-                foreach (File::directories($modulesPath) as $module) {
-                    $migrationPath = $module . '/database/migrations';
-
-                    if (File::isDirectory($migrationPath)) {
-                        $this->loadMigrationsFrom($migrationPath);
-                    }
-                    $this->loadRoutesFrom($module . '\\routes\\web.php');
-                    $this->loadRoutesFrom($module . '\\routes\\api.php');
+        if (File::exists($modulesPath)) {
+            foreach (File::directories($modulesPath) as $module) {
+                $migrationPath = $module . '/database/migrations';
+                if (File::isDirectory($migrationPath)) {
+                    $this->loadMigrationsFrom($migrationPath);
                 }
+                $this->loadRoutesFrom($module . '\\routes\\web.php');
+                $this->loadRoutesFrom($module . '\\routes\\api.php');
             }
         }
     }
