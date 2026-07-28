@@ -308,7 +308,7 @@ class ClassGenerator
 
         $apiRouteFile = base_path("Modules/{$module}/routes/api.php");
         if (!File::exists($apiRouteFile)) {
-            File::put($apiRouteFile, "<?php\n\nuse Illuminate\Support\Facades\Route;\n\nRoute::middleware(['auth:sanctum'])->group(function () {\n    // Define your API routes here\n});\n");
+            File::put($apiRouteFile, "<?php\n\nuse Illuminate\Support\Facades\Route;\n\nRoute::prefix('api')->middleware(['auth:sanctum'])->group(function () {\n    // Define your API routes here\n});\n");
         }
     }
 }
