@@ -46,8 +46,17 @@ class CoreModulesServiceProvider extends ServiceProvider
                 if (File::isDirectory($migrationPath)) {
                     $this->loadMigrationsFrom($migrationPath);
                 }
-                $this->loadRoutesFrom($module . '\\routes\\web.php');
-                $this->loadRoutesFrom($module . '\\routes\\api.php');
+
+                $webRoutesPath = $module . '/routes/web.php';
+                $apiRoutesPath = $module . '/routes/api.php';
+
+                if (File::isFile($webRoutesPath)) {
+                    $this->loadRoutesFrom($webRoutesPath);
+                }
+
+                if (File::isFile($apiRoutesPath)) {
+                    $this->loadRoutesFrom($apiRoutesPath);
+                }
             }
         }
     }
